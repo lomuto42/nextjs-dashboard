@@ -2,6 +2,8 @@
 import Form from '../../../invoices/edit-form';
 import Breadcrumbs from '../../../invoices/breadcrumbs';
 import { fetchInvoiceById, fetchCustomers } from '@/app/lib/data';
+import { updateInvoice } from '@/app/lib/actions';
+import { notFound } from 'next/navigation';
 
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -9,7 +11,11 @@ export default async function Page({ params }: { params: { id: string } }) {
     const [invoice, customers] = await Promise.all([
         fetchInvoiceById(id),
         fetchCustomers(),
-      ]);
+    ]);
+
+    if (!invoice) {
+        notFound();
+    }
 
   return (
     <main>
